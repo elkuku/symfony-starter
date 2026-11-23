@@ -5,7 +5,7 @@
 ![screenshot](https://github.com/user-attachments/assets/c43f0b5d-8279-4737-b194-87cc0c74a140)
 
 ## What's this??
-An opinionated [Symfony](https://symfony.com) project template including:
+An opinionated [Symfony](https://symfony.com) starter template with user management and social OAuth login, including:
 
 * Symfony 8.*
 * Docker compose file for PostgreSQL
@@ -14,11 +14,16 @@ An opinionated [Symfony](https://symfony.com) project template including:
 * Bootstrap
 
 ## Installation
-Clone the repo then use the
+Create your own repository with GitHub's [Use this template](https://github.com/elkuku/symfony-starter/generate) button, or clone this one:
+```shell
+git clone https://github.com/elkuku/symfony-starter.git my-project
+cd my-project
+```
+Then run
 ```shell
 bin/install
 ```
-command OR execute the script content manually.
+OR execute the script content manually.
 
 It needs Composer, the [Symfony CLI](https://symfony.com/download) and Docker with Compose v2 (`docker compose`).
 On a fresh database it loads two users, `user` and `admin`, that you can log in with using the `dev` login form.
@@ -44,7 +49,7 @@ make tests
 ```
 
 ## Check for updates
-Check four outdated PHP deps, recipes and assets.
+Check for outdated PHP deps, recipes and assets.
 
 ```shell
 composer check
