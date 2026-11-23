@@ -8,6 +8,9 @@ The template ships **two** Google logins so you can choose. Both store the same 
 | How it works | Redirects to Google and back, like the GitHub login (via `knpuniversity/oauth2-client-bundle`) | Google's own button / One Tap ([Google Identity Services](https://developers.google.com/identity/gsi/web)), posts an ID token to `/connect/google/verify` |
 | Choose it if | You also need access to Google APIs, or want all providers to work the same way | You only need sign-in. This is what Google recommends, and the button follows Google's branding rules automatically |
 | Extra dependencies | none | `google/apiclient` |
+| Environment variables | `OAUTH_GOOGLE_ID`, `OAUTH_GOOGLE_SECRET` | `OAUTH_GOOGLE_ID` |
+
+Both logins use the same OAuth client ID, `OAUTH_GOOGLE_ID`. The `GOOGLE_*` variables and the `Google\Client` service in `config/packages/google_apiclient.yaml` come from the `google/apiclient` recipe and are not used for sign-in, so leave them empty. You only need them if you call Google APIs through that service.
 
 ## Removing the OAuth redirect login
 * Delete `src/Security/GoogleAuthenticator.php` and `src/Controller/Security/GoogleController.php`.

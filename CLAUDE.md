@@ -69,6 +69,8 @@ PostgreSQL via Docker Compose. Doctrine ORM with migrations. Fixtures in `src/Da
 
 ## Environment Variables
 OAuth credentials go in `.env.local` (gitignored):
-- `OAUTH_GOOGLE_ID`, `OAUTH_GOOGLE_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_API_KEY`, `GOOGLE_AUTH_CONFIG`
+- `OAUTH_GOOGLE_ID` (both Google logins), `OAUTH_GOOGLE_SECRET` (OAuth redirect login only)
 - `OAUTH_GITHUB_CLIENT_ID`, `OAUTH_GITHUB_CLIENT_SECRET`
 - `OAUTH_GITLAB_CLIENT_ID`, `OAUTH_GITLAB_CLIENT_SECRET`
+
+The `GOOGLE_*` variables (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_API_KEY`, `GOOGLE_AUTH_CONFIG`) come from the `google/apiclient` recipe and configure the `Google\Client` service in `config/packages/google_apiclient.yaml`. Sign-in doesn't use them: `GoogleIdentityAuthenticator` builds its own client from `OAUTH_GOOGLE_ID`. Leave them empty unless you call Google APIs.
