@@ -2,7 +2,7 @@
 
 ![GitHub workflow](https://github.com/elkuku/symfony-starter/actions/workflows/tests.yml/badge.svg)
 
-![screenshot](https://github.com/user-attachments/assets/c43f0b5d-8279-4737-b194-87cc0c74a140)
+![Screenshot](assets/docs/screenshot.png)
 
 ## What's this??
 An opinionated [Symfony](https://symfony.com) starter template with user management and social OAuth login, including:
