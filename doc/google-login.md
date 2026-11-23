@@ -10,7 +10,8 @@ The template ships **two** Google logins so you can choose. Both store the same 
 | Extra dependencies | none | `google/apiclient` |
 
 ## Removing the OAuth redirect login
-* Delete `src/Security/GoogleAuthenticator.php`, `src/Controller/Security/GoogleController.php` and `tests/Security/GoogleAuthenticatorTest.php`.
+* Delete `src/Security/GoogleAuthenticator.php` and `src/Controller/Security/GoogleController.php`.
+* In `tests/Security/OAuthAuthenticatorTest.php`, remove the `'Google'` case from `providers()` and the `GoogleAuthenticator` and `GoogleUser` imports.
 * Remove `App\Security\GoogleAuthenticator` from `custom_authenticators` in `config/packages/security.yaml`.
 * Remove the `google` client from `config/packages/knpu_oauth2_client.yaml`, and `OAUTH_GOOGLE_SECRET` from `.env`.
 * Remove the `connect_google_start` button from `templates/auth/login.html.twig`.
