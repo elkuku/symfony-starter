@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Symfony Playground Two</title>
+    <title>Symfony Starter</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style><?= file_get_contents(__DIR__.'/page.css') ?></style>
 </head>
 <body>
     <header class="site-header">
         <div class="container py-3 d-flex align-items-center gap-3">
-            <span class="fs-5 fw-bold">⚡ Symfony Playground Two</span>
-            <img src="https://github.com/elkuku/symfony-playground-two/actions/workflows/tests.yml/badge.svg" alt="Tests" height="20">
+            <span class="fs-5 fw-bold">⚡ Symfony Starter</span>
+            <img src="https://github.com/elkuku/symfony-starter/actions/workflows/tests.yml/badge.svg" alt="Tests" height="20">
         </div>
     </header>
 
     <main class="container py-5">
         <div class="mb-5">
-            <h1 class="fw-bold mb-2">Symfony Playground Two</h1>
+            <h1 class="fw-bold mb-2">Symfony Starter</h1>
             <p class="text-secondary lead">An opinionated Symfony project template with user management, PostgreSQL, and social OAuth login (Google, GitHub, GitLab).</p>
         </div>
 
@@ -72,13 +72,13 @@
                     <div class="card-title text-secondary mb-3">Links</div>
                     <ul class="list-unstyled mb-0">
                         <li class="py-2 border-bottom border-secondary">
-                            <a href="https://github.com/elkuku/symfony-playground-two">GitHub Repository</a>
+                            <a href="https://github.com/elkuku/symfony-starter">GitHub Repository</a>
                         </li>
                         <li class="py-2 border-bottom border-secondary">
                             <a href="coverage/index.html">Coverage Report</a>
                         </li>
                         <li class="py-2">
-                            <a href="https://github.com/elkuku/symfony-playground-two/actions">CI Runs</a>
+                            <a href="https://github.com/elkuku/symfony-starter/actions">CI Runs</a>
                         </li>
                     </ul>
                 </div>

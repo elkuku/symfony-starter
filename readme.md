@@ -1,6 +1,6 @@
-# Symfony Playground "two"
+# Symfony Starter
 
-![GitHub workflow](https://github.com/elkuku/symfony-playground-two/actions/workflows/tests.yml/badge.svg)
+![GitHub workflow](https://github.com/elkuku/symfony-starter/actions/workflows/tests.yml/badge.svg)
 
 ![screenshot](https://github.com/user-attachments/assets/c43f0b5d-8279-4737-b194-87cc0c74a140)
 
