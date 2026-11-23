@@ -35,6 +35,7 @@ vendor/bin/php-cs-fixer fix             # Auto-fix code style
 ```bash
 composer check       # Check outdated assets, PHP deps, and recipes
 composer db-diagram  # Regenerate assets/docs/database.svg
+composer screenshot  # Retake assets/docs/screenshot.png (bin/screenshot.mjs, needs Node.js + Chrome)
 symfony console user-admin  # Interactive user management CLI
 ```
 

@@ -121,6 +121,10 @@
             ],
         "db-diagram": [
             "symfony console doctrine:diagram:er --exclude=doctrine_migration_versions"
+        ],
+        "screenshot": [
+            "npm install --silent --no-save --no-package-lock --prefix var/screenshot playwright-core@1.55.0",
+            "node bin/screenshot.mjs"
         ]
     },
     "conflict": {

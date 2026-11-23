@@ -65,6 +65,16 @@ You can create this with
 composer db-diagram
 ```
 
+## Screenshot
+
+Retake the screenshot at the top with
+
+```shell
+composer screenshot
+```
+
+It logs in as `admin` with headless Google Chrome (via `playwright-core`, installed into `var/screenshot`) and needs Node.js and the fixtures loaded.
+
 ## Google login
 
 The template ships two Google logins, "Continue with Google" (OAuth redirect) and "Sign in with Google" (Google's own button). Keep the one you need: see [Google login: pick one](doc/google-login.md).
