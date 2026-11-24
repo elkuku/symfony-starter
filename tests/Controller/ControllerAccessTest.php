@@ -36,10 +36,6 @@ class ControllerAccessTest extends ControllerBaseTest
             'app_login' => [
                 'statusCodes' => ['GET' => 200],
             ],
-            // Logout requires a CSRF token, see LogoutTest.
-            'app_logout' => [
-                'statusCodes' => ['GET' => 403],
-            ],
         ];
 
     public function testAllRoutesAreProtected(): void

@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 final class UserControllerTest extends WebTestCase
 {
@@ -168,11 +170,58 @@ final class UserControllerTest extends WebTestCase
         $admin = $this->userRepository->findOneBy(['identifier' => 'admin']);
         self::assertNotNull($admin);
 
-        $this->client->request('POST', \sprintf('%s%s', $this->path, $admin->id), ['_token' => 'irrelevant']);
+        // The page hides the delete form for your own account, so build the token a hand-crafted request would send.
+        $this->client->request('POST', \sprintf('%s%s', $this->path, $admin->id), [
+            '_token' => $this->getCsrfToken('delete'.$admin->id),
+        ]);
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('.alert-danger[role="alert"]', 'You cannot delete your own account.');
         self::assertNotNull($this->userRepository->findOneBy(['identifier' => 'admin']));
+    }
+
+    public function testDeleteWithInvalidCsrfTokenIsRejected(): void
+    {
+        $fixture = new User()->setIdentifier('csrf-victim');
+        $this->manager->persist($fixture);
+        $this->manager->flush();
+
+        $this->client->followRedirects(false);
+        $this->client->request('POST', \sprintf('%s%s', $this->path, $fixture->id), ['_token' => 'invalid']);
+
+        // An invalid token is an authentication failure: the firewall sends the user to the login page.
+        self::assertResponseRedirects('/login');
+        self::assertNotNull($this->userRepository->findOneBy(['identifier' => 'csrf-victim']));
+    }
+
+    public function testNonNumericIdIsNotFound(): void
+    {
+        $this->client->request('GET', $this->path.'abc');
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    /**
+     * Generates a token in the browser's session, as rendering csrf_token() would.
+     */
+    private function getCsrfToken(string $tokenId): string
+    {
+        // Start the session and make it the current request's session.
+        $this->client->request('GET', $this->path);
+        $request = $this->client->getRequest();
+
+        $requestStack = self::getContainer()->get('request_stack');
+        \assert($requestStack instanceof RequestStack);
+        $requestStack->push($request);
+
+        $tokenManager = self::getContainer()->get('security.csrf.token_manager');
+        \assert($tokenManager instanceof CsrfTokenManagerInterface);
+        $token = $tokenManager->getToken($tokenId)->getValue();
+
+        $request->getSession()->save();
+        $requestStack->pop();
+
+        return $token;
     }
 
     public function testOwnRoleFieldIsDisabled(): void

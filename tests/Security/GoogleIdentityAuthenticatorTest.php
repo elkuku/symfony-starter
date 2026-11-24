@@ -50,7 +50,7 @@ class GoogleIdentityAuthenticatorTest extends TestCase
 
     public function testAuthenticateThrowsOnEmptyCredential(): void
     {
-        $request = new Request([], ['credential' => '']);
+        $request = new Request([], ['credential' => '', 'g_csrf_token' => 'csrf'], cookies: ['g_csrf_token' => 'csrf']);
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $this->expectException(AuthenticationException::class);
@@ -60,11 +60,29 @@ class GoogleIdentityAuthenticatorTest extends TestCase
 
     public function testAuthenticateThrowsOnZeroCredential(): void
     {
-        $request = new Request([], ['credential' => '0']);
+        $request = new Request([], ['credential' => '0', 'g_csrf_token' => 'csrf'], cookies: ['g_csrf_token' => 'csrf']);
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessageIsOrContains('Missing credentials');
+        $this->authenticator->authenticate($request);
+    }
+
+    public function testAuthenticateThrowsWithoutCsrfCookie(): void
+    {
+        $request = new Request([], ['credential' => 'id-token', 'g_csrf_token' => 'csrf']);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('Invalid CSRF token');
+        $this->authenticator->authenticate($request);
+    }
+
+    public function testAuthenticateThrowsOnCsrfMismatch(): void
+    {
+        $request = new Request([], ['credential' => 'id-token', 'g_csrf_token' => 'forged'], cookies: ['g_csrf_token' => 'csrf']);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('Invalid CSRF token');
         $this->authenticator->authenticate($request);
     }
 

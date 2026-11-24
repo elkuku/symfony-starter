@@ -27,6 +27,8 @@ OR execute the script content manually.
 
 It needs Composer, the [Symfony CLI](https://symfony.com/download) and Docker with Compose v2 (`docker compose`).
 On a fresh database it loads two users, `user` and `admin`, that you can log in with using the `dev` login form.
+
+In production, set `APP_SECRET` to a random value of your own (in `.env.prod.local`, the server environment or the [secrets vault](https://symfony.com/doc/current/configuration/secrets.html)). It signs the remember-me cookies, and `.env` deliberately leaves it empty.
    
 ## Usage
 Create and administer user accounts.

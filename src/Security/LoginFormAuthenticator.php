@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
@@ -19,13 +17,17 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * Password-less login for development: signs in as any existing user.
+ *
+ * Only registered on the firewall in the dev and test environments, see config/packages/security.yaml.
+ */
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public function __construct(
         private readonly RouterInterface $router,
-        #[Autowire(env: 'APP_ENV')] private readonly string $appEnv,
     ) {
     }
 
@@ -35,22 +37,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         return $this->router->generate('app_login');
     }
 
-    /**
-     * Password-less login, only available in the dev and test environments.
-     */
-    #[\Override]
-    public function supports(Request $request): bool
-    {
-        return $this->isEnabled() && parent::supports($request);
-    }
-
     #[\Override]
     public function authenticate(Request $request): Passport
     {
-        if (!$this->isEnabled()) {
-            throw new CustomUserMessageAuthenticationException('Form login is disabled.');
-        }
-
         $identifier = (string) $request->request->get('identifier');
 
         if ('' === $identifier) {
@@ -67,11 +56,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
                 new RememberMeBadge(),
             ]
         );
-    }
-
-    private function isEnabled(): bool
-    {
-        return \in_array($this->appEnv, ['dev', 'test'], true);
     }
 
     #[\Override]

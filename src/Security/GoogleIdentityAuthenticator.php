@@ -39,6 +39,14 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     #[\Override]
     public function authenticate(Request $request): Passport
     {
+        // Google's double-submit CSRF check: the cookie it set must match the field it posted.
+        // @see https://developers.google.com/identity/gsi/web/guides/verify-google-id-token
+        $csrfCookie = (string) $request->cookies->get('g_csrf_token');
+
+        if ('' === $csrfCookie || $csrfCookie !== (string) $request->request->get('g_csrf_token')) {
+            throw new AuthenticationException('Invalid CSRF token :(');
+        }
+
         $idToken = (string) $request->request->get('credential');
 
         if ('' === $idToken || '0' === $idToken) {

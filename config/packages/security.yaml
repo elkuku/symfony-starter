@@ -16,10 +16,10 @@ security:
             security: false
         main:
             lazy: true
-            entry_point: App\Security\LoginFormAuthenticator
+            entry_point: App\Security\LoginEntryPoint
 
+            # The password-less LoginFormAuthenticator is added for dev and test below.
             custom_authenticators:
-                - App\Security\LoginFormAuthenticator
                 - App\Security\GoogleAuthenticator
                 - App\Security\GoogleIdentityAuthenticator
                 - App\Security\GitHubAuthenticator
@@ -47,8 +47,17 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
+when@dev:
+    security:
+        firewalls: &form_login_firewalls
+            main:
+                # Signs in as any existing user without a password: never enable it in prod.
+                custom_authenticators:
+                    - App\Security\LoginFormAuthenticator
+
 when@test:
     security:
+        firewalls: *form_login_firewalls
         password_hashers:
             # Password hashers are resource-intensive by design to ensure security.
             # In tests, it's safe to reduce their cost to improve performance.
