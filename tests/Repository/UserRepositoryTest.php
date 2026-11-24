@@ -51,6 +51,24 @@ class UserRepositoryTest extends KernelTestCase
         self::assertSame($sorted, $ids);
     }
 
+    public function testPaginateReturnsOnePageOrderedById(): void
+    {
+        $total = $this->repository->count();
+        self::assertGreaterThanOrEqual(2, $total);
+
+        $first = \iterator_to_array($this->repository->paginate(1, 1));
+        $second = \iterator_to_array($this->repository->paginate(2, 1));
+
+        self::assertCount(1, $first);
+        self::assertCount(1, $second);
+        self::assertLessThan($second[0]->id, $first[0]->id);
+    }
+
+    public function testPaginateCountsAllUsers(): void
+    {
+        self::assertCount($this->repository->count(), $this->repository->paginate(1, 1));
+    }
+
     public function testGetAvailableIdentifierReturnsFreeIdentifierUnchanged(): void
     {
         self::assertSame('nobody-has-this', $this->repository->getAvailableIdentifier('nobody-has-this'));

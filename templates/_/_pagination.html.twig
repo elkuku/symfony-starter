@@ -1,0 +1,47 @@
+{#
+    Bootstrap pagination for a list route that takes a "page" query parameter.
+
+    Variables:
+        route       the list's route name
+        page        the current page, starting at 1
+        page_count  the number of pages
+        params      (optional) other route parameters to keep
+#}
+{% if page_count > 1 %}
+    {% set params = params|default({}) %}
+    {% set first = max(1, page - 2) %}
+    {% set last = min(page_count, page + 2) %}
+    <nav aria-label="Pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item{{ page <= 1 ? ' disabled' }}">
+                <a class="page-link" href="{{ path(route, params|merge({page: page - 1})) }}" aria-label="Previous">&laquo;</a>
+            </li>
+
+            {% if first > 1 %}
+                <li class="page-item"><a class="page-link" href="{{ path(route, params|merge({page: 1})) }}">1</a></li>
+                {% if first > 2 %}
+                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                {% endif %}
+            {% endif %}
+
+            {% for p in first..last %}
+                {% if p == page %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ p }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ path(route, params|merge({page: p})) }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if last < page_count %}
+                {% if last < page_count - 1 %}
+                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="{{ path(route, params|merge({page: page_count})) }}">{{ page_count }}</a></li>
+            {% endif %}
+
+            <li class="page-item{{ page >= page_count ? ' disabled' }}">
+                <a class="page-link" href="{{ path(route, params|merge({page: page + 1})) }}" aria-label="Next">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

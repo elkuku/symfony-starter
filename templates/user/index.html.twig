@@ -26,9 +26,10 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.identifier }}</td>
                 <td>
-                        <span class="{{ user.role.cssClass }}">
-                            {{ user.role.label }}
-                        </span>
+                    <span class="{{ user.role.cssClass }}">
+                        {{ user.role.label }}
+                    </span>
+                </td>
                 <td>{{ user.googleId }}</td>
                 <td>{{ user.gitHubId }}</td>
                 <td>{{ user.gitLabId }}</td>
@@ -39,9 +40,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    {{ include('_/_pagination.html.twig', {route: 'app_user_index'}) }}
 {% endblock %}

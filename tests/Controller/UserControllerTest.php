@@ -6,9 +6,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Enum\UserRole;
+use App\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -57,6 +59,59 @@ final class UserControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('User index');
+        // The fixtures fit on one page.
+        self::assertSelectorNotExists('.pagination');
+    }
+
+    public function testIndexPaginates(): void
+    {
+        $initialCount = $this->userRepository->count();
+        $extraUsers = UserRepository::PER_PAGE + 1 - $initialCount;
+
+        for ($i = 1; $i <= $extraUsers; ++$i) {
+            $this->manager->persist(new User()->setIdentifier('page-user-'.$i));
+        }
+
+        $this->manager->flush();
+
+        try {
+            $this->client->request('GET', $this->path);
+            self::assertResponseIsSuccessful();
+            self::assertSelectorCount(UserRepository::PER_PAGE, 'tbody tr');
+            self::assertSelectorTextContains('.pagination .active', '1');
+
+            $this->client->clickLink('2');
+            self::assertResponseIsSuccessful();
+            self::assertSelectorCount(1, 'tbody tr');
+            self::assertSelectorTextContains('.pagination .active', '2');
+        } finally {
+            foreach ($this->userRepository->findAll() as $user) {
+                if (\str_starts_with($user->getIdentifier(), 'page-user-')) {
+                    $this->manager->remove($user);
+                }
+            }
+
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function invalidPages(): iterable
+    {
+        yield 'zero' => ['0'];
+        yield 'negative' => ['-1'];
+        yield 'not a number' => ['abc'];
+        yield 'past the last page' => ['2'];
+    }
+
+    #[DataProvider('invalidPages')]
+    public function testIndexInvalidPageIsNotFound(string $page): void
+    {
+        $this->client->request('GET', $this->path.'?page='.$page);
+
+        self::assertResponseStatusCodeSame(404);
     }
 
     public function testNew(): void
