@@ -1,6 +1,6 @@
 # Symfony Starter
 
-![GitHub workflow](https://github.com/elkuku/symfony-starter/actions/workflows/tests.yml/badge.svg)
+[![CI](https://github.com/elkuku/symfony-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/elkuku/symfony-starter/actions/workflows/ci.yml)
 
 ![Screenshot](assets/docs/screenshot.png)
 
