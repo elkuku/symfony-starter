@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/', name: 'app_default', methods: ['GET'])]
-class DefaultController extends BaseController
+final class DefaultController extends BaseController
 {
     public function __invoke(
         #[Autowire('%kernel.project_dir%')] string $projectDir,

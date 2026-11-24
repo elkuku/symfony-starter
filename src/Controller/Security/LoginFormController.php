@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
-class LoginFormController extends AbstractController
+final class LoginFormController extends AbstractController
 {
     public function __invoke(
         AuthenticationUtils $authenticationUtils,
@@ -27,7 +27,7 @@ class LoginFormController extends AbstractController
             [
                 'last_username' => $authenticationUtils->getLastUsername(),
                 'error' => $authenticationUtils->getLastAuthenticationError(),
-                'oauthGoogleId' => $oauthGoogleId,
+                'oauth_google_id' => $oauthGoogleId,
             ]
         );
     }

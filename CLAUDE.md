@@ -55,7 +55,7 @@ Single-action controller pattern under `src/Controller/`:
 Access control uses `#[IsGranted()]` attributes.
 
 ### Security
-Multi-authenticator: form login + OAuth2 via `knpuniversity/oauth2-client-bundle`. Remember-me is enabled. The password-less `LoginFormAuthenticator` is added to the firewall only under `when@dev`/`when@test` in `security.yaml`; `LoginEntryPoint` redirects anonymous users to the login page in every environment.
+Multi-authenticator: form login + OAuth2 via `knpuniversity/oauth2-client-bundle`. Remember-me is enabled. The password-less `LoginFormAuthenticator` is added to the firewall only under `when@dev`/`when@test` in `security.yaml`; `LoginEntryPoint` redirects anonymous users to the login page in every environment. `Security/Voter/UserVoter` (`USER_DELETE`, `USER_CHANGE_ROLE`) stops admins from deleting their own account or changing their own role.
 
 There are intentionally two Google logins (`GoogleAuthenticator` = OAuth redirect, `GoogleIdentityAuthenticator` = Sign in with Google). Projects built from the template remove one; see `doc/google-login.md`. Don't remove either in the template itself.
 

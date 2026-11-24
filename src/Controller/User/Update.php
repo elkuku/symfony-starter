@@ -8,6 +8,7 @@ use App\Controller\BaseController;
 use App\Entity\User;
 use App\Enum\UserRole;
 use App\Form\UserType;
+use App\Security\Voter\UserVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,8 @@ final class Update extends BaseController
 {
     public function __invoke(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        // Changing your own role could leave the application without an administrator.
         $form = $this->createForm(UserType::class, $user, [
-            'lock_role' => $user->id === $this->getUser()->id,
+            'lock_role' => !$this->isGranted(UserVoter::CHANGE_ROLE, $user),
         ]);
         $form->handleRequest($request);
 

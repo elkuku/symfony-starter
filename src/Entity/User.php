@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\Table;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[Entity(repositoryClass: UserRepository::class)]
 // Quoted: USER is a reserved word in PostgreSQL.
@@ -29,7 +28,9 @@ class User implements UserInterface
      */
     public private(set) ?int $id = null;
 
-    #[Column(unique: true), NotBlank]
+    #[Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private string $identifier = '';
 
     #[Column(type: Types::STRING, length: 50, enumType: UserRole::class)]

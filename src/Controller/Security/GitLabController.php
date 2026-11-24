@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GitLabController extends AbstractController
+final class GitLabController extends AbstractController
 {
     /**
      * Link to this controller to start the "connect" process.

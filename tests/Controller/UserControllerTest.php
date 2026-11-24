@@ -175,8 +175,8 @@ final class UserControllerTest extends WebTestCase
             '_token' => $this->getCsrfToken('delete'.$admin->id),
         ]);
 
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('.alert-danger[role="alert"]', 'You cannot delete your own account.');
+        // UserVoter denies it.
+        self::assertResponseStatusCodeSame(403);
         self::assertNotNull($this->userRepository->findOneBy(['identifier' => 'admin']));
     }
 

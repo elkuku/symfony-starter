@@ -7,13 +7,14 @@ namespace App\Controller\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GoogleIdentityController extends AbstractController
+final class GoogleIdentityController extends AbstractController
 {
     /**
-     * This route is needed for the authenticator.
+     * GoogleIdentityAuthenticator handles this route before the controller is reached.
      */
     #[Route(path: '/connect/google/verify', name: 'connect_google_verify', methods: ['POST'])]
-    public function connectVerify(): void
+    public function connectVerify(): never
     {
+        throw new \LogicException('This route is handled by GoogleIdentityAuthenticator.');
     }
 }

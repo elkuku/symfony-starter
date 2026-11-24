@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GoogleController extends AbstractController
+final class GoogleController extends AbstractController
 {
     /**
      * Link to this controller to start the "connect" process.

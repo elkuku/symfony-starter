@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
 #[IsGranted(UserRole::USER->value)]
-class ProfileController extends BaseController
+final class ProfileController extends BaseController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
     {
